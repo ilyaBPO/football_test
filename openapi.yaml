@@ -1,0 +1,2138 @@
+openapi: 3.0.0
+info:
+  title: Football
+  version: 0.0.1
+servers:
+  - url: https://football.requestbitrix.ru/api/v1/
+    description: dev server
+tags:
+  - name: Поля
+  - name: Свойства полей
+  - name: Города
+  - name: Уведомления
+  - name: Авторизация/регистрация
+  - name: Пользователь
+  - name: События
+paths:
+  /events/getActiveEvents/:
+    get:
+      summary: Получение активных событий
+      tags:
+        - События
+      operationId: getAllEvents
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: array
+                    description: Массив полей
+                    items:
+                      $ref: "#/components/schemas/Events"
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /events/createEvent/:
+    post:
+      summary: Создание события
+      tags:
+        - События
+      parameters:
+        - name: start_time
+          description: Время начала события
+          schema:
+            type: string
+        - name: end_time
+          description: Время окончания события
+          schema:
+            type: string
+        - name: gender
+          description: Пол допустимых участников
+          schema:
+            type: string
+        - name: price
+          description: Стоимость присоединения к событию
+          schema:
+            type: string
+        - name: name
+          description: Название события
+          schema:
+            type: string
+        - name: description
+          description: Описание события
+          schema:
+            type: string
+        - name: access
+          description: Доступ к событию
+          schema:
+            type: string
+        - name: players_count
+          description: Количество участников в событии
+          schema:
+            type: string
+        - name: min_players
+          description: Минимальное количество участников события
+          schema:
+            type: string
+        - name: field_id
+          description: Время начала события
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: array
+                    description: Массив полей
+                    items:
+                      $ref: "#/components/schemas/Events"
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /events/getEvent/:
+    get:
+      summary: Получение события по ID
+      tags:
+        - События
+      operationId: getEventBy
+      parameters:
+        - name: event_id
+          description: id события
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: array
+                    description: Массив полей
+                    items:
+                      $ref: "#/components/schemas/Events"
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /events/cancelEvent/:
+    post:
+      summary: Отменить событие
+      tags:
+        - События
+      operationId: cancelEvent
+      parameters:
+        - name: event_id
+          description: id события
+          schema:
+            type: integer
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /events/userEvents/:
+    get:
+      summary: События пользователя
+      tags:
+        - События
+      operationId: userEvents
+      parameters:
+        - name: user_id
+          description: id пользователя
+          schema:
+            type: integer
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: array
+                    description: Массив полей
+                    items:
+                      $ref: "#/components/schemas/Events"
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /events/eventRegistration/:
+    post:
+      summary:  регистрация на событие
+      tags:
+        - События
+      operationId: eventRegistration
+      parameters:
+        - name: user_id
+          description: id Пользователя
+          schema:
+            type: integer
+        - name: event_id
+          description: id События
+          schema:
+            type: integer
+        - name: team
+          description: id команды (52 - 1-ая команда, 53 - 2-ая команда)
+          schema:
+            type: integer
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: array
+                    description: Массив полей
+                    items:
+                      $ref: "#/components/schemas/Events"
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /events/leaveEvent/:
+    post:
+      summary: покинуть событие
+      tags:
+        - События
+      operationId: leaveEvent
+      parameters:
+        - name: user_id
+          description: id Пользователя
+          schema:
+            type: integer
+        - name: event_id
+          description: id События
+          schema:
+            type: integer
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: array
+                    description: Массив полей
+                    items:
+                      $ref: "#/components/schemas/Events"
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /events/eventUsers/:
+    get:
+      summary: список участников события
+      tags:
+        - События
+      operationId: getEventUsers 
+      parameters:
+        - name: event_id
+          description: id Пользователя
+          schema:
+            type: integer
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                type: integer
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /fields/getFields/:
+    get:
+      tags:
+        - Поля
+      summary: Список полей
+      description: Возвращает список полей
+      responses:
+        '200':
+          description: Возвращает список полей
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: array
+                    description: Массив полей
+                    items:
+                      $ref: "#/components/schemas/FieldObject"
+  /fields/getField/{id}:
+    get:
+      tags:
+        - Поля
+      summary: Поле
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      description: Возвращает поле по ID
+      responses:
+        '200':
+          description: Возвращает поле по ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    $ref: "#/components/schemas/FieldObject"
+        '404':
+          description: Ошибка 404
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundResponse"
+  /fields/createField/:
+    post:
+      tags:
+        - Поля
+      summary: Создание поля
+      description: Метод создания поля
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/FieldRequestBody"
+      responses:
+        '200':
+          description: Возвращает ответ результата создания
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: object
+                    properties:
+                      RESULT:
+                        type: string
+                        example: CREATED
+                      ID:
+                        type: integer
+                        description: ID созданного поля
+        '400':
+          description: Массив ошибок
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                    example: false
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 400
+                  message:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        UF_NAME:
+                          type: string
+                          description: Название поля
+                          example: "Поле \"Название\" не должно быть пустым"
+                  time:
+                    type: string
+                    description: Время ответа
+        '401':
+          description: Требуется авторизация
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+  /fields/updateField/{id}:
+    post:
+      tags:
+        - Поля
+      summary: Обновление поля
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      description: Обновление поля по ID
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/FieldRequestBody"
+      responses:
+        '200':
+          description: Возвращает ответ результата создания
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdatedResponse"
+        '400':
+          description: Массив ошибок
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                    example: false
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 400
+                  message:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        UF_NAME:
+                          type: string
+                          description: Название поля
+                          example: "Поле \"Название\" не должно быть пустым"
+                  time:
+                    type: string
+                    description: Время ответа
+        '401':
+          description: Требуется авторизация
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+  /fields/deleteField/{id}:
+    delete:
+      tags:
+        - Поля
+      summary: Удаление поля
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      description: Удаление поля по ID
+      responses:
+        '200':
+          description: Успешное удаление
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeletedResponse"
+        '401':
+          description: Требуется авторизация
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Изменения запрещены
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Поле не найдено
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundResponse"
+  /fields/getFieldProperty/area_type:
+    get:
+      tags:
+        - Свойства полей
+      summary: Список типов площадок
+      description: Возвращает список типов площадок
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    $ref: "#/components/schemas/FieldPropertyObject"
+  /fields/getFieldProperty/dressing_rooms:
+    get:
+      tags:
+        - Свойства полей
+      summary: Список типов раздевалок
+      description: Возвращает список типов раздевалок
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/FieldPropertyObject"
+  /fields/getFieldProperty/cover:
+    get:
+      tags:
+        - Свойства полей
+      summary: Список типов покрытий
+      description: Возвращает список типов покрытий
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/FieldPropertyObject"
+  /fields/getFieldProperty/lighting:
+    get:
+      tags:
+        - Свойства полей
+      summary: Список типов освещения
+      description: Возвращает список типов освещения
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/FieldPropertyObject"
+  /cities/getCities:
+    get:
+      tags:
+        - Города
+      summary: Список городов
+      description: Возвращает список городов
+      responses:
+        '200':
+          description: Возвращает список городов
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: array
+                    description: Массив городов
+                    items:
+                      $ref: "#/components/schemas/CityObject"
+  /cities/getCity/{id}:
+    get:
+      tags:
+        - Города
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      summary: Город по ID
+      description: Возвращает город по ID
+      responses:
+        '200':
+          description: Возвращает город по ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    $ref: "#/components/schemas/CityObject"
+        '404':
+          description: Ошибка 404
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundResponse"
+  /notifications/getUserNotifications/:
+    get:
+      tags:
+        - Уведомления
+      summary: Список уведомлений для текущего пользователя
+      description: Возвращает список уведомлений для текущего пользователя
+      responses:
+        '200':
+          description: Список уведомлений для текущего пользователя
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: array
+                    description: Массив уведомлений
+                    items:
+                      $ref: "#/components/schemas/NotificationObject"
+        '401':
+          description: Требуется авторизация
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+  /notifications/getUserNotificationById/{id}:
+    get:
+      tags:
+        - Уведомления
+      summary: Уведомление для текущего пользователя по ID
+      description: Возвращает уведомление для текущего пользователя по ID
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Уведомление для текущего пользователя по ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    $ref: "#/components/schemas/NotificationObject"
+        '401':
+          description: Требуется авторизация
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '404':
+          description: Уведомление не найдено
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundResponse"
+  /notifications/readNotification/{id}:
+    post:
+      tags:
+        - Уведомления
+      summary: Поставить отметку "Прочитано" у уведомления по ID
+      description: Поставить отметку "Прочитано" у уведомления по ID
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdatedResponse"
+        '401':
+          description: Требуется авторизация
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Изменения запрещены
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Уведомление не найдено
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundResponse"
+  /notifications/deleteNotification/{id}:
+    delete:
+      tags:
+        - Уведомления
+      summary: Удаление уведомления по ID
+      description: Удаление уведомления по ID
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeletedResponse"
+        '401':
+          description: Требуется авторизация
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnauthorizedResponse"
+        '403':
+          description: Изменения запрещены
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResponse"
+        '404':
+          description: Уведомление не найдено
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundResponse"
+  /auth/login/:
+    post:
+      tags:
+        - Авторизация/регистрация
+      summary: Авторизация пользователя
+      description: Метод авторизации пользователя
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthRequestBody"
+      responses:
+        '200':
+          description: Возвращает ответ результата авторизации
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                    example: "Вы успешно авторизованы!"
+                  time:
+                    type: string
+                    description: Время ответа
+        '400':
+          description: Массив ошибок
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                    example: false
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 400
+                  message:
+                    type: array
+                    description: Сообщение
+                    example: "Неверный логин/пароль"
+                  time:
+                    type: string
+                    description: Время ответа
+  /auth/registerUserStep1/:
+    post:
+      tags:
+        - Авторизация/регистрация
+      summary: Регистрация пользователя первый шаг
+      description: Метод регистрации пользователя
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterStep1RequestBody"
+      responses:
+        '200':
+          description: Возвращает ответ результата первого шага регистрации
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                    example: "Первый шаг регистрации успешно пройден!"
+                  time:
+                    type: string
+                    description: Время ответа
+        '400':
+          description: Ошибки валидации
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                    example: false
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 400
+                  message:
+                    type: array
+                    description: Сообщение
+                    example: "Пожалуйста, заполните все обязательные поля / Данный ник уже занят / Укажите корректный адрес электронной почты"
+                  time:
+                    type: string
+                    description: Время ответа
+  /auth/register/:
+    post:
+      tags:
+        - Авторизация/регистрация
+      summary: Регистрация пользователя
+      description: Метод регистрации пользователя
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequestBody"
+      responses:
+        '200':
+          description: Возвращает ответ результата регистрации
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                    example: "Пользователь успешно зарегистрирован!"
+                  time:
+                    type: string
+                    description: Время ответа
+        '400':
+          description: Массив ошибок
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                    example: false
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 400
+                  message:
+                    type: array
+                    description: Сообщение
+                    example: "Пожалуйста, заполните все обязательные поля / Пароль должен содержать латинские буквы и цифры, и хотя бы одну заглавную букву / Ошибка при регистрации пользователя"
+                  time:
+                    type: string
+                    description: Время ответа
+  /auth/sendRegistrationCode/:
+    post:
+      tags:
+        - Авторизация/регистрация
+      summary: Отправка кода на телефон для регистрации
+      description: Метод для отправки кода на телефон для регистрации
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone:
+                  type: string
+                  description: Телефон
+      responses:
+        '200':
+          description: Возвращает ответ результата
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                    example: "Проверочный код успешно отправлен!"
+                  time:
+                    type: string
+                    description: Время ответа
+        '400':
+          description: Массив ошибок
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                    example: false
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 400
+                  message:
+                    type: array
+                    description: Сообщение
+                    example: "Пользователь с этим телефонным номером уже зарегистрирован. / Введите номер телефона."
+                  time:
+                    type: string
+                    description: Время ответа
+  /auth/sendRecoveryCode/:
+    post:
+      tags:
+        - Авторизация/регистрация
+      summary: Отправка проверочного кода на почту для восстановления пароля
+      description: Метод для отправки проверочного кода на почту для восстановления пароля
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Email
+      responses:
+        '200':
+          description: Возвращает ответ результата
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                    example: "Проверочный код успешно отправлен!"
+                  time:
+                    type: string
+                    description: Время ответа
+        '400':
+          description: Массив ошибок
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                    example: false
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 400
+                  message:
+                    type: array
+                    description: Сообщение
+                    example: "Не удалось отправить проверочный код. / Введите вашу электронную почту."
+                  time:
+                    type: string
+                    description: Время ответа
+  /auth/checkRegistrationCode/:
+    post:
+      tags:
+        - Авторизация/регистрация
+      summary: Подтверждение проверочного кода при регистрации
+      description: Метод для подтверждения проверочного кода при регистрации. Пока что не подключен sms-провайдер, он будет 1111
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: Код
+      responses:
+        '200':
+          description: Возвращает ответ результата
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                    example: "Проверочный код введён правильно!"
+                  time:
+                    type: string
+                    description: Время ответа
+        '400':
+          description: Массив ошибок
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                    example: false
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 400
+                  message:
+                    type: array
+                    description: Сообщение
+                    example: "Проверочный код введён неверно!"
+                  time:
+                    type: string
+                    description: Время ответа
+  /auth/checkRecoveryCode/:
+    post:
+      tags:
+        - Авторизация/регистрация
+      summary: Подтверждение проверочного кода для восстановления пароля
+      description: Метод для подтверждения проверочного кода для восстановления пароля
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: Код
+      responses:
+        '200':
+          description: Возвращает ответ результата
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                    example: "Проверочный код введён правильно!"
+                  time:
+                    type: string
+                    description: Время ответа
+        '400':
+          description: Массив ошибок
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                    example: false
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 400
+                  message:
+                    type: array
+                    description: Сообщение
+                    example: "Проверочный код введён неверно!"
+                  time:
+                    type: string
+                    description: Время ответа
+  /auth/updatePassword/:
+    post:
+      tags:
+        - Авторизация/регистрация
+      summary: Восстановление пароля
+      description: Метод для восстановления пароля
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  description: ID пользователя
+                password:
+                  type: string
+                  description: пароль
+      responses:
+        '200':
+          description: Возвращает ответ результата
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                    example: "Пароль успешно обновлён!"
+                  time:
+                    type: string
+                    description: Время ответа
+        '400':
+          description: Массив ошибок
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                    example: false
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 400
+                  message:
+                    type: array
+                    description: Сообщение
+                    example: "Ошибка при обновлении пароля / Пользователь не найден / Проверьте отправляемые данные"
+                  time:
+                    type: string
+                    description: Время ответа
+  /user/getUserInfo/:
+    get:
+      tags:
+        - Пользователь
+      summary: Получение информации о пользователе
+      description: Метод для получения информации о пользователе
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  example: 1
+                  description: ID пользователя
+      responses:
+        '200':
+          description: Возвращает ответ результата
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                    example: "Личная информация пользователя успешно получена!"
+                  data:
+                    $ref: "#/components/schemas/UserObject"
+                  time:
+                    type: string
+                    description: Время ответа
+        '400':
+          description: Массив ошибок
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                    example: false
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 400
+                  message:
+                    type: array
+                    description: Сообщение
+                    example: "Ошибка при получении личной информации пользователя"
+                  time:
+                    type: string
+                    description: Время ответа
+  /user/updateUserInfo/:
+    post:
+      tags:
+        - Пользователь
+      summary: Обновление информации о пользователе
+      description: Метод для обновления информации о пользователе
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  example: 1
+                  description: ID пользователя
+      responses:
+        '200':
+          description: Возвращает ответ результата
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                    example: "Личная информация пользователя успешно получена!"
+                  time:
+                    type: string
+                    description: Время ответа
+        '400':
+          description: Массив ошибок
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                    example: false
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 400
+                  message:
+                    type: array
+                    description: Сообщение
+                    example: "Ошибка при получении личной информации пользователя"
+                  time:
+                    type: string
+                    description: Время ответа
+
+
+      
+components:
+  schemas:
+    Event:
+      type: object
+      required:
+        - UF_ACCESS
+        - UF_GENDER
+      properties:
+        ID:
+          type: string
+          example: id события
+        UF_DATE:
+          type: string
+        UF_START_TIME:
+          type: string
+        UF_END_TIME:
+          type: string
+        UF_GENDER:
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 3
+          example: id значения
+        UF_PRICE:
+          type: string
+        UF_NAME:
+          type: string
+        UF_AD_INFO:
+          type: string
+        UF_ACCESS:
+          type: integer
+          enum:
+            - 4
+            - 5
+          example: id значения
+        UF_PLAYERS_COUNT:
+          type: integer
+        UF_MIN_PLAYERS:
+          type: integer
+        UF_STATUS:
+          type: integer
+          enum:
+            - 6
+            - 7
+            - 8
+          description: test
+        UF_FIELD: 
+          type: integer
+        UF_HOST_ID:
+          type: integer
+    Events:
+      type: array
+      items:
+        $ref: "#/components/schemas/Event"
+    Error:
+      type: object
+      required:
+        - status
+        - code
+        - message
+        - time
+      properties:
+        status:
+          type: boolean
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        time: 
+          type: string
+    EventRegistrations:
+      type: object
+      required:
+        - UF_USER
+        - UF_EVENT_ID
+        - UF_TEAM
+      properties:
+        UF_USER:
+          type: integer
+        UF_EVENT_ID:
+          type: integer
+        UF_TEAM:
+          type: integer
+    FieldObject:
+      type: object
+      properties:
+        ID:
+          type: string
+          description: ID поля
+        UF_CREATED:
+          type: string
+          format: date-time
+          description: Дата создания
+        UF_STATUS:
+          type: object
+          description: Статус поля
+          properties:
+            ID:
+              type: integer
+              format: int32
+              description: ID статуса
+            VALUE:
+              type: string
+              description: Название статуса
+        UF_NAME:
+          type: string
+          description: Название поля
+        UF_TOWN:
+          type: object
+          description: Город
+          properties:
+            ID:
+              type: integer
+              format: int32
+              description: ID города
+            UF_NAME:
+              type: string
+              description: Название города
+        UF_ADDRESS:
+          type: string
+          description: Адрес
+        UF_OPENING:
+          type: string
+          description: Время открытия
+        UF_CLOSING:
+          type: string
+          description: Время закрытия
+        UF_PHONE:
+          type: string
+          description: Телефон
+        UF_NEAR_METRO:
+          type: object
+          description: Город
+          format: nullable
+          properties:
+            ID:
+              type: integer
+              format: int32
+              description: ID метро
+            UF_NAME:
+              type: string
+              description: Название метро
+        UF_SITE:
+          type: string
+          description: Адрес сайта
+        UF_DESCRIPTION:
+          type: string
+          description: Описание
+        UF_PLAYER_CAPACITY:
+          type: integer
+          format: int32
+          description: Вместимость игроков
+        UF_LENGTH:
+          type: integer
+          format: int32
+          description: Длина поля
+        UF_WIDTH:
+          type: integer
+          format: int32
+          description: Ширина поля
+        UF_AREA_TYPE:
+          type: object
+          description: Тип площадки
+          properties:
+            ID:
+              type: integer
+              format: int32
+              description: ID типа площадки
+            VALUE:
+              type: string
+              description: Название типа площадки
+        UF_LIGHTING:
+          type: object
+          description: Освещение
+          properties:
+            ID:
+              type: integer
+              format: int32
+              description: ID типа освещения
+            VALUE:
+              type: string
+              description: Название типа освещения
+        UF_SHOWER:
+          type: boolean
+          description: Душ
+        UF_IMAGES:
+          type: array
+          description: Изображения
+          items:
+            type: object
+            properties:
+              SRC:
+                type: string
+                description: Путь до картинки
+        UF_COVER:
+          type: object
+          description: Покрытие
+          properties:
+            ID:
+              type: integer
+              format: int32
+              description: ID покрытия
+            VALUE:
+              type: string
+              description: Название покрытия
+        UF_DRESSING_ROOMS:
+          type: object
+          description: Раздевалки
+          properties:
+            ID:
+              type: integer
+              format: int32
+              description: ID типа раздевалки
+            VALUE:
+              type: string
+              description: Название типа раздевалки
+        UF_STANDS:
+          type: integer
+          format: int32
+          description: Количество трибун (мест)
+        UF_USER:
+          type: integer
+          format: int32
+          description: ID создателя
+        UF_RATING:
+          type: number
+          description: Рейтинг поля
+        UF_TAGS:
+          type: array
+          description: Теги поля
+          items:
+            type: object
+            properties:
+              NAME:
+                type: string
+                description: Название тега
+              COUNT:
+                type: integer
+                format: int32
+                description: Количество
+    FieldPropertyObject:
+      type: object
+      properties:
+        ID:
+          type: integer
+          format: int32
+          description: ID типа
+        VALUE:
+          type: string
+          description: Название
+    CityObject:
+      type: object
+      properties:
+        ID:
+          type: string
+          description: ID города
+        UF_NAME:
+          type: string
+          description: Название города
+        UF_METRO:
+          type: array
+          description: Список метро для конкретного города
+          items:
+            type: object
+            properties:
+              ID:
+                type: integer
+                format: int32
+                description: ID метро
+              UF_NAME:
+                type: string
+                description: Название метро
+    NotificationObject:
+      type: object
+      properties:
+        ID:
+          type: integer
+          format: int32
+          description: ID уведомления
+        UF_USER:
+          type: integer
+          format: int32
+          description: ID пользователя к которому приходит уведомление
+        UF_MESSAGE:
+          type: string
+          description: Текст уведомления
+        UF_DATE:
+          type: string
+          format: date-time
+          description: Дата
+        UF_CHECKED:
+          type: boolean
+          description: Прочитано
+        UF_EVENT:
+          type: integer
+          format: nullable
+          description: ID события
+        UF_SUBSCRIBER:
+          type: integer
+          format: nullable
+          description: ID другого пользователь (для подписки)
+        UF_SUBSCRIBER_MESSAGE:
+          type: integer
+          format: nullable
+          description: ID сообщения пользователя
+        UF_FIELD:
+          type: integer
+          format: nullable
+          description: ID поля
+    UnauthorizedResponse:
+      description: Требуется авторизация
+      type: object
+      properties:
+        status:
+          type: boolean
+          description: Статус (false)
+          example: false
+        code:
+          type: string
+          description: Код ответа (401)
+          example: 401
+        message:
+          type: string
+          description: Сообщение
+          example: Требуется авторизация,
+        time:
+          type: string
+          description: Время ответа
+    ForbiddenResponse:
+      description: Требуется авторизация
+      type: object
+      properties:
+        status:
+          type: boolean
+          description: Статус (false)
+          example: false
+        code:
+          type: string
+          description: Код ответа (403)
+          example: 403
+        message:
+          type: string
+          description: Сообщение
+          example: Изменения запрещены,
+        time:
+          type: string
+          description: Время ответа
+    NotFoundResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          description: Статус (false)
+          example: false
+        code:
+          type: string
+          description: Код ответа (404)
+          example: 404
+        message:
+          type: string
+          description: Сообщение
+          example: Объект с id={id} не найдено,
+        time:
+          type: string
+          description: Время ответа
+    DeletedResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          description: Статус
+        code:
+          type: string
+          description: Код ответа
+          example: 200
+        message:
+          type: string
+          description: Сообщение
+        time:
+          type: string
+          description: Время ответа
+        data:
+          type: object
+          properties:
+            RESULT:
+              type: string
+              example: DELETED
+    UpdatedResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          description: Статус
+        code:
+          type: string
+          description: Код ответа
+          example: 200
+        message:
+          type: string
+          description: Сообщение
+        time:
+          type: string
+          description: Время ответа
+        data:
+          type: object
+          properties:
+            RESULT:
+              type: string
+              example: UPDATED
+            ID:
+              type: string
+    FieldRequestBody:
+      type: object
+      properties:
+        UF_NAME:
+          type: string
+          description: Название
+        UF_TOWN:
+          type: integer
+          description: ID города
+          format: int32
+        UF_ADDRESS:
+          type: string
+          description: Адрес
+        UF_OPENING:
+          type: string
+          description: Часы открытия
+          example: 10:00
+          pattern: ^\d{2}:\d{2}$
+        UF_CLOSING:
+          type: string
+          description: Часы закрытия
+          example: 10:00
+          pattern: ^\d{2}:\d{2}$
+        UF_PHONE:
+          type: string
+          description: Телефон
+          pattern: ^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$
+        UF_NEAR_METRO:
+          type: integer
+          description: ID ближайшего метро
+          format: nullable
+        UF_SITE:
+          type: string
+          description: Сайт
+        UF_DESCRIPTION:
+          type: string
+          description: Описание
+        UF_PLAYER_CAPACITY:
+          type: integer
+          description: Вместимость игроков
+        UF_LENGTH:
+          type: integer
+          description: Длина поля
+          format: nullable
+        UF_WIDTH:
+          type: integer
+          description: Ширина поля
+          format: nullable
+        UF_AREA_TYPE:
+          type: integer
+          description: ID типа площадки
+        UF_LIGHTING:
+          type: integer
+          description: ID типа освещение
+        UF_SHOWER:
+          type: boolean
+          description: Душ
+          format: nullable
+        UF_IMAGES:
+          type: array
+          description: Изображения
+          items:
+            type: string
+            format: binary
+        UF_COVER:
+          type: integer
+          description: ID покрытия
+        UF_DRESSING_ROOMS:
+          type: integer
+          description: ID типа раздевалки
+        UF_STANDS:
+          type: integer
+          description: Количество трибун (мест)
+          format: nullable
+    AuthRequestBody:
+      type: object
+      properties:
+        login:
+          type: string
+          description: Логин
+        password:
+          type: string
+          description: Пароль
+    RegisterRequestBody:
+      type: object
+      properties:
+        nick:
+          type: string
+          description: Ник
+        name:
+          type: string
+          description: Имя
+        surname:
+          type: string
+          description: Фамилия
+        email:
+          type: string
+          description: Email
+        password:
+          type: string
+          description: Пароль
+        confirmPassword:
+          type: string
+          description: Подтвержденный пароль
+    RegisterStep1RequestBody:
+      type: object
+      properties:
+        nick:
+          type: string
+          description: Ник
+        name:
+          type: string
+          description: Имя
+        surname:
+          type: string
+          description: Фамилия
+        email:
+          type: string
+          description: Email
+    UserObject:
+      type: object
+      properties:
+        ID:
+          type: integer
+          format: int32
+          description: ID пользователя
+        PHOTO:
+          type: string
+          description: Ссылка на фото
+        NAME:
+          type: string
+          description: Имя пользователя
+        LAST_NAME:
+          type: string
+          description: Фамилия пользователя
+        SECOND_NAME:
+          type: string
+          description: Отчество пользователя
+        EMAIL:
+          type: string
+          description: Email пользователя
+        BIRTHDATE:
+          type: string
+          description: Дата рождения пользователя
+        GENDER:
+          type: string
+          description: Пол пользователя
+        CITY:
+          type: string
+          description: Город пользователя
+        ABOUT:
+          type: string
+          description: Описание пользователя
+        POSITION:
+          type: string
+          description: Позиция пользователя
+        LEVEL:
+          type: string
+          description: Уровень пользователя
+        RATING:
+          type: string
+          description: Средняя оценка пользователя
+        MVP:
+          type: string
+          description: Количество "Лучший игрок" пользователя
+        GAMES:
+          type: string
+          description: Количество сыгранных игр пользователя
+        VISITED_PERCENT:
+          type: string
+          description: Средний процент помещенных игр пользователя
+        REVIEW_COUNT:
+          type: string
+          description: Количество отзывов пользователя
+        WALLET:
+          type: string
+          description: Кошелёк пользователя
