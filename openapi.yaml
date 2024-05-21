@@ -13,6 +13,10 @@ tags:
   - name: Авторизация/регистрация
   - name: Пользователь
   - name: События
+  - name: Сообщения
+  - name: Отзывы
+  - name: Избранное
+  - name: Подписки
 paths:
   /events/getActiveEvents/:
     get:
@@ -1543,7 +1547,154 @@ paths:
                   time:
                     type: string
                     description: Время ответа
+  /messages/getMessage/:
+    get:
+      tags: 
+        - Сообщения
+      summary: Получение сообщения по ID
+      description:
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: array
+                    description: Массив полей
+                    items:
+                      $ref: "#/components/schemas/Message"
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /messages/getMessagesEvent/:
+    get:
+      tags:
+        - Сообщения
+        summary: Получение всех сообщений события, отсортированных по дате
+        description:
+        parameters:
+        - name: EVENT_ID
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: USER_ID
+          in: path
+          schema:
+            type: integer
+          required: true
+        responses:
+          '200':
+            description:
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: boolean
+                      description: Статус
+                    code:
+                      type: string
+                      description: Код ответа
+                      example: 200
+                    message:
+                      type: string
+                      description: Сообщение
+                    time:
+                      type: string
+                      description: Время ответа
+                    data:
+                      type: array
+                      description: Массив полей
+                      items:
+                        $ref: "#/components/schemas/Messages"
+          default:
+            description: Ошибка
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"
+  /messages/createMessage/:
+    get:
+      tags:
+        - Сообщения
+        summary: Получение всех сообщений события, отсортированных по дате
+        description:
+        parameters:
+        - name: USER_ID
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: EVENT_ID
+          in: path
+          schema:
+            type: integer
+          required: true
+        - name: MESSAGE
+          in: path
+          schema:
+            type: string
+          required: true
+        responses:
+          '200':
+            description:
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: boolean
+                      description: Статус
+                    code:
+                      type: string
+                      description: Код ответа
+                      example: 200
+                    message:
+                      type: string
+                      description: Сообщение
+                    time:
+                      type: string
+                      description: Время ответа
+                    data:
+                      type: integer
+                      description: ID нового сообщения
+          default:
+            description: Ошибка
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"
 
+
+        
 
       
 components:
@@ -2136,3 +2287,38 @@ components:
         WALLET:
           type: string
           description: Кошелёк пользователя
+    Message:
+      type: object
+      properties:
+        ID:
+          type: integer
+          format: int32
+          description: ID пользователя
+        UF_MESSAGE:
+          type: string
+          description: Текст сообщения
+        UF_LIKES:
+          type: integer
+          format: int32
+          description: Счетчик лайков
+        UF_EVENT_ID:
+          type: integer
+          format: int32
+          description: ID события
+        UF_USER_ID:
+          type: integer
+          format: int32
+          description: ID пользователя
+        UF_DATE:
+          type: string
+          format: int32
+          description: DateTime
+    Messages:
+      type: array
+      items:
+        $ref: "#/components/schemas/Message"
+        
+
+    
+
+
