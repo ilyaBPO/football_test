@@ -1552,10 +1552,8 @@ paths:
       tags: 
         - Сообщения
       summary: Получение сообщения по ID
-      description:
       parameters:
         - name: id
-          in: path
           schema:
             type: integer
           required: true
@@ -1591,13 +1589,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /messages/getMessagesEvent/:
+  /messages/getMessagesEvent/{EVENT_ID, USER_ID}:
     get:
       tags:
         - Сообщения
-        summary: Получение всех сообщений события, отсортированных по дате
-        description:
-        parameters:
+      summary: Получение всех сообщений события, отсортированных по дате
+      parameters:
         - name: EVENT_ID
           in: path
           schema:
@@ -1608,45 +1605,44 @@ paths:
           schema:
             type: integer
           required: true
-        responses:
-          '200':
-            description:
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    status:
-                      type: boolean
-                      description: Статус
-                    code:
-                      type: string
-                      description: Код ответа
-                      example: 200
-                    message:
-                      type: string
-                      description: Сообщение
-                    time:
-                      type: string
-                      description: Время ответа
-                    data:
-                      type: array
-                      description: Массив полей
-                      items:
-                        $ref: "#/components/schemas/Messages"
-          default:
-            description: Ошибка
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Error"
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: array
+                    description: Массив полей
+                    items:
+                      $ref: "#/components/schemas/Messages"
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /messages/createMessage/:
-    get:
+    post:
       tags:
         - Сообщения
-        summary: Получение всех сообщений события, отсортированных по дате
-        description:
-        parameters:
+      summary: Создание нового сообщения
+      parameters:
         - name: USER_ID
           in: path
           schema:
@@ -1662,39 +1658,463 @@ paths:
           schema:
             type: string
           required: true
-        responses:
-          '200':
-            description:
-            content:
-              application/json:
-                schema:
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: integer
+                    description: ID нового сообщения
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /messages/like/:
+    post:
+      tags:
+        - Сообщения
+      summary: Изменение кол-ва лайков
+      parameters:
+        - name: MESSAGE_ID
+          in: path
+          schema:
+            type: integer
+        - name: USER_ID
+          in: path
+          schema:
+            type: integer
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /messages/dislike/:
+    post:
+      tags:
+        - Сообщения
+      summary: Изменение кол-ва лайков
+      parameters:
+        - name: MESSAGE_ID
+          in: path
+          schema:
+            type: integer
+        - name: USER_ID
+          in: path
+          schema:
+            type: integer
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /review/getFieldTags/:
+    get:
+      tags:
+        - Отзывы
+      summary: Получить значения тегов для полей
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: object
+                    properties:
+                      ID:
+                        type: integer
+                        description: целое число
+                      VALUE:
+                        type: string
+                        description: Значение
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /review/getHostTags/:
+    get:
+      tags:
+        - Отзывы
+    summary: Получить значения тегов для хоста
+    responses:
+      '200':
+        description:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: boolean
+                  description: Статус
+                code:
+                  type: string
+                  description: Код ответа
+                  example: 200
+                message:
+                  type: string
+                  description: Сообщение
+                time:
+                  type: string
+                  description: Время ответа
+                data:
                   type: object
                   properties:
-                    status:
-                      type: boolean
-                      description: Статус
-                    code:
-                      type: string
-                      description: Код ответа
-                      example: 200
-                    message:
-                      type: string
-                      description: Сообщение
-                    time:
-                      type: string
-                      description: Время ответа
-                    data:
+                    ID:
                       type: integer
-                      description: ID нового сообщения
-          default:
-            description: Ошибка
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Error"
-
-
-        
+                      description: целое число
+                    VALUE:
+                      type: string
+                      description: Значение
+      default:
+        description: Ошибка
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+  /review/sendReview/:
+    post:
+      summary: Отправить отзыв
+      tags:
+        - Отзывы
+      parameters:
+        - name: HOST_RATING
+          schema:
+            type: integer
+        - name: HOST_TAG
+          schema:
+            type: integer
+        - name: FIELD_RATING
+          schema:
+            type: integer
+        - name: FIELD_TAG
+          schema:
+            type: integer
+        - name: FIELD_COMMENT
+          schema:
+            type: string
+        - name: USER_ID
+          schema:
+            type: integer
+        - name: FIELD_ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: array
+                    items:
+                      ID:
+                        type: integer
+                        description: ID добавленных записей
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /favorite/addFavorite/:
+    post:
+      summary: Добавить в избранное
+      tags: 
+        - Избранное
+      parameters:
+        - name: USER_ID
+          schema:
+            type: integer
+        - name: FIELD_ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: integer
+                    description: ID записи
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /favorite/deleteFavorite/:
+    delete:
+      summary: Удалить из избранного
+      tags: 
+        - Избранное
+      parameters:
+        - name: USER_ID
+          schema:
+            type: integer
+        - name: FIELD_ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /subscribe/addSubscribe/:
+    post:
+      summary: Подписаться
+      tags:
+        - Подписки
+      parameters:
+        - name: USER_ID
+          schema:
+            type: integer
+        - name: SUBSCRIBE_ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: integer
+                    description: ID записи
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /subscribe/deleteSubscribe/:
+    delete:
+      summary: Отписаться
+      tags:
+        - Подписки
+      parameters:
+        - name: USER_ID
+          schema:
+            type: integer
+        - name: SUBSCRIBE_ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /subscribe/checkFriend/:
+    get:
+      summary: Отписаться
+      tags:
+        - Подписки
+      parameters:
+        - name: USER_ID
+          schema:
+            type: integer
+        - name: FRIEND_ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    description: Статус
+                  code:
+                    type: string
+                    description: Код ответа
+                    example: 200
+                  message:
+                    type: string
+                    description: Сообщение
+                  time:
+                    type: string
+                    description: Время ответа
+                  data:
+                    type: boolean
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
       
 components:
